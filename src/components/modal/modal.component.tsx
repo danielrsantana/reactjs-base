@@ -16,13 +16,13 @@ export interface ModalComponentProps {
   children?: React.ReactNode;
 }
 
-export interface ModalState {
+export interface ModalComponentState {
   isVisible: boolean;
 }
 
 export default class ModalComponent extends React.Component<
   ModalComponentProps,
-  ModalState
+  ModalComponentState
 > {
   constructor(props: ModalComponentProps) {
     super(props);
