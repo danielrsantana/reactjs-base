@@ -68,11 +68,26 @@ export default class SampleFeature extends React.Component<
                 isHorizontal={true}
                 iconLeft="fas fa-envelope"
                 iconRight="fas fa-user"
-                isLoading={true}
-                isRounded={false}
                 isNormal={true}
               />
             </div>
+          </div>
+        </div>
+        <div className="colums">
+          <div className="column is-6">
+            <InputTextComponent
+              type="text"
+              placeHolder="Teste 1234"
+              label="UserName"
+              hasLabel={true}
+              labelPosition="top"
+              isHorizontal={true}
+              iconLeft="fas fa-user"
+              iconRight="fas fa-check"
+              isSuccess={true}
+              validationMessage="this username is available"
+              isValid={true}
+            />
           </div>
         </div>
         <div className="columns">

@@ -69,14 +69,24 @@ export default class InputTextComponent extends React.Component<
   }
 
   renderInputControlTip() {
-    const { isValid, validationMessage, isValidationCritical } = this.props;
+    const {
+      isValid,
+      validationMessage,
+      isDanger,
+      isInfo,
+      isSuccess,
+      isPrimary
+    } = this.props;
 
     return (
       <p
         className={classnames({
           help: true,
           "is-invisible": !isValid,
-          "is-danger": isValidationCritical
+          "is-danger": isDanger,
+          "is-primary": isPrimary,
+          "is-info": isInfo,
+          "is-success": isSuccess
         })}
       >
         {validationMessage}
