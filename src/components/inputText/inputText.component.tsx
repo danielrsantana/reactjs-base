@@ -1,161 +1,181 @@
 import * as React from "react";
 import classnames from "classnames";
 
+const LEFT_POSITION: string = "left";
+
 export interface InputTextComponentProps {
-    isPrimary?: boolean;
-    isIconSmall?: boolean;
-    isIconMedium?: boolean;
-    isIconLarge?: boolean;
-    isLeft?: boolean;
-    isRight?: boolean;
-    isInfo?: boolean;
-    isSuccess?: boolean;
-    isWarningy?: boolean;
-    isDanger?: boolean;
-    isSmally?: boolean;
-    isMedium?: boolean;
-    isLarge?: boolean;
-    isRounded?: boolean;
-    isLoading?: boolean;
-    isDisabled?: boolean;
-    isHorizontal?: boolean;
-    isNormal?: boolean;
-    isVertical?: boolean;
-    hasIconLeft?: boolean;
-    hasIconRight?: boolean;
-    iconLeft?: string;
-    iconRight?: string;
-    hasLabel?: boolean;
-    label: string;
-    placeHolder?: string;
-    type: string;
-    value?: string;
+  inputClass?: string;
+  isPrimary?: boolean;
+  isIconSmall?: boolean;
+  isIconMedium?: boolean;
+  isIconLarge?: boolean;
+  isLeft?: boolean;
+  isRight?: boolean;
+  isInfo?: boolean;
+  isSuccess?: boolean;
+  isWarningy?: boolean;
+  isDanger?: boolean;
+  isSmally?: boolean;
+  isMedium?: boolean;
+  isLarge?: boolean;
+  isRounded?: boolean;
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  isHorizontal?: boolean;
+  isNormal?: boolean;
+  isVertical?: boolean;
+  iconLeft?: string;
+  iconRight?: string;
+  iconSize?: string;
+  hasLabel?: boolean;
+  label?: string;
+  labelPosition?: string;
+  placeHolder?: string;
+  isValid?: boolean;
+  validationMessage?: string;
+  isValidationCritical?: boolean;
+  type: string;
+  value?: string;
 }
 
 export interface InputTextComponentState {
-    value?: string;
+  value?: string;
 }
 
 export default class InputTextComponent extends React.Component<
-    InputTextComponentProps,
-    InputTextComponentState
-    > {
-    constructor(props: InputTextComponentProps) {
-        super(props);
+  InputTextComponentProps,
+  InputTextComponentState
+> {
+  constructor(props: InputTextComponentProps) {
+    super(props);
 
-        const { value } = this.props;
-        this.state = {
-            value: value
-        };
+    const { value } = this.props;
+    this.state = {
+      value: value
+    };
+  }
+
+  renderAdvancedInputLabel() {
+    const { label } = this.props;
+
+    return (
+      <div className="inputTextComponent field is-horizontal">
+        <div className="field-label is-normal">
+          <label className="label">{label}</label>
+        </div>
+        <div className="field-body">{this.renderInputControl(true)}</div>
+      </div>
+    );
+  }
+
+  renderInputControlTip() {
+    const { isValid, validationMessage, isValidationCritical } = this.props;
+
+    return (
+      <p
+        className={classnames({
+          help: true,
+          "is-invisible": !isValid,
+          "is-danger": isValidationCritical
+        })}
+      >
+        {validationMessage}
+      </p>
+    );
+  }
+
+  renderInputControlIcon = (
+    iconSize?: string,
+    iconPosition?: string,
+    iconClass?: string
+  ): React.ReactNode => {
+    if (iconPosition) {
+      return (
+        <span className={`icon ${iconSize} ${iconPosition}`}>
+          <i className={iconClass} />
+        </span>
+      );
     }
+  };
 
-    renderInputLabel() {
-        const {
-            isHorizontal,
-            isNormal,
-            isVertical,
-            hasLabel,
-            label,
-        } = this.props;
+  renderInputControlTopLabel = (isLabelAtLeft): React.ReactNode => {
+    const { label } = this.props;
 
-        if (hasLabel) {
-            return (
-                <div className={classnames({
-                    'field-label': true,
-                    'is-normal': true,
-                })} >
-                    <label className="label">{label}</label>
-                </div>);
-        }
+    if (!isLabelAtLeft) {
+      return <label className="label">{label}</label>;
     }
+  };
 
-    render() {
-        const {
-            isHorizontal,
-            isNormal,
-            isVertical,
-            hasIconLeft,
-            hasIconRight,
-            iconLeft,
-            iconRight,
-            hasLabel,
-            isPrimary,
-            isInfo,
-            isSuccess,
-            isWarningy,
-            isDanger,
-            isSmally,
-            isMedium,
-            isLarge,
-            isRounded,
-            isLoading,
-            isDisabled,
-            isIconSmall,
-            isIconMedium,
-            isIconLarge,
-            isLeft,
-            isRight,
-            label,
-            placeHolder,
-            type,
-        } = this.props;
+  renderInputControl(isLabelAtLeft) {
+    const {
+      iconLeft,
+      iconRight,
+      iconSize,
+      placeHolder,
+      type,
+      isDanger,
+      isDisabled,
+      isInfo,
+      isLoading,
+      isPrimary,
+      isRounded,
+      isSuccess
+    } = this.props;
 
-        const { value } = this.state;
+    return (
+      <div
+        className={classnames({
+          inputTextComponent: !isLabelAtLeft,
+          field: true
+        })}
+      >
+        {this.renderInputControlTopLabel(isLabelAtLeft)}
+        <div className="control has-icons-left has-icons-right">
+          <input
+            className={classnames({
+              input: true,
+              "is-danger": isDanger,
+              "is-primary": isPrimary,
+              "is-info": isInfo,
+              "is-success": isSuccess,
+              "is-loading": isLoading,
+              "is-disabled": isDisabled,
+              "is-rounded": isRounded
+            })}
+            type={type}
+            placeholder={placeHolder}
+          />
+          {this.renderInputControlIcon(
+            iconSize,
+            iconLeft ? "is-left" : "",
+            iconLeft
+          )}
+          {this.renderInputControlIcon(
+            iconSize,
+            iconRight ? "is-right" : "",
+            iconRight
+          )}
+        </div>
+        {this.renderInputControlTip()}
+      </div>
+    );
+  }
 
-        return (
-            <div className={classnames({
-                inputText: true,
-                'field': true,
-                'is-horizontal': isHorizontal,
-                'is-normal': isNormal,
-                'is-vertical': isVertical,
-                'has-icons-left': hasIconLeft,
-                'is-has-icons-right': hasIconRight
-            })}>
-                {this.renderInputLabel()}
-                <div className="field-body">
-                    <div className="field">
-                        <p className="control">
-                            <input className={classnames({
-                                input: true,
-                                'is-primary': isPrimary,
-                                'is-info': isInfo,
-                                'is-success': isSuccess,
-                                'is-warning': isWarningy,
-                                'is-danger': isDanger,
-                                'is-small': isSmally,
-                                'is-medium': isMedium,
-                                'is-large': isLarge,
-                                'is-rounded': isRounded,
-                                'is-loading': isLoading,
-                                'is-disabled': isDisabled,
-                            })}
-                                type={type}
-                                placeholder={placeHolder}
-                                value={value}
-                            />
-                            <span className={classnames({
-                                icon: true,
-                                'is-small': isIconSmall,
-                                'is-medium': isIconMedium,
-                                'is-large': isIconLarge,
-                                'is-left': isLeft,
-                            })} >
-                                <i className={iconLeft}></i>
-                            </span>
-                            <span className={classnames({
-                                icon: true,
-                                'is-small': isIconSmall,
-                                'is-medium': isIconMedium,
-                                'is-large': isIconLarge,
-                                'is-right': isRight,
-                            })} >
-                                <i className={iconRight}></i>
-                            </span>
-                        </p>
-                    </div>
-                </div>
-            </div >
-        );
+  render() {
+    const { label, labelPosition, hasLabel } = this.props;
+
+    const isLabelAtLeft: boolean =
+      hasLabel &&
+      label &&
+      labelPosition &&
+      labelPosition.toLowerCase() === LEFT_POSITION
+        ? true
+        : false;
+
+    if (isLabelAtLeft) {
+      return this.renderAdvancedInputLabel();
+    } else {
+      return this.renderInputControl(false);
     }
+  }
 }
