@@ -1,62 +1,120 @@
 import * as React from "react";
+import classnames from "classnames";
+import { connect } from "react-redux";
+import * as shortid from "shortid";
 import SampleFeature from "../features/sample/sample.feature";
 import ModalComponent from "../components/modal/modal.component";
+import AlertComponent from "../components/alert/alert.component";
+require("./app.scss");
 
-export interface ModalState {
-    isModalVisible: boolean;
+export interface AppPageState {
+  isModalVisible: boolean;
 }
 
-export default class App extends React.Component<{}, ModalState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isModalVisible: false
-        };
-    }
+export interface AppPageProps {
+  messages: Array<string>;
+}
 
-    onAlertParent = (): void => {
-        console.log("it should open modal....");
-        this.setState({ isModalVisible: true });
+const mapStateToProps = state => {
+  return { messages: state.messages };
+};
+
+export class App extends React.Component<AppPageProps, AppPageState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalVisible: false
     };
+  }
 
-    onButton1Clicked = (): void => {
-        this.setState({ isModalVisible: false });
-    };
+  onAlertParent = (): void => {
+    this.setState({ isModalVisible: true });
+  };
 
-    onButton2Clicked = (): void => {
-        this.setState({ isModalVisible: false });
-    };
+  onButton1Clicked = (): void => {
+    this.setState({ isModalVisible: false });
+  };
 
-    onModalClose = (): void => {
-        this.setState({ isModalVisible: false });
-    };
+  onButton2Clicked = (): void => {
+    this.setState({ isModalVisible: false });
+  };
 
-    render() {
-        const { isModalVisible } = this.state;
+  onModalClose = (): void => {
+    this.setState({ isModalVisible: false });
+  };
 
-        return (
-            <div className="app">
-                <SampleFeature
-                    title="Flex Payment"
-                    message="welcome to stylished react+typescript+bulma app v2.0"
-                    onAlertParent={this.onAlertParent}
-                />
-                <ModalComponent
-                    title="Consuming Component Modal"
-                    button1Class="is-info"
-                    button1Visible={true}
-                    button1Text="Ok"
-                    button2Class=""
-                    button2Text="Cancel"
-                    button2Visible={false}
-                    isVisible={isModalVisible}
-                    onButton1Clicked={this.onModalClose}
-                    onButton2Clicked={this.onModalClose}
-                    onModalClose={this.onModalClose}
-                >
-                    <div className="container">This is a modal </div>
-                </ModalComponent>
-            </div>
+  renderAlerts = () => {
+    const { messages } = this.props;
+    const alertList: Array<React.ReactNode> = [];
+    if (messages && messages.length > 0) {
+      messages.forEach(element => {
+        alertList.push(
+          <AlertComponent isSuccess={true} message={element} key={shortid.generate()} />
         );
+      });
     }
+    return (
+      <div
+        className={classnames({
+          alertContainer: true,
+          alertTopLeft: false,
+          alertTopRight: true,
+          alertBottomLeft: false,
+          alertBottomRight: false
+        })}
+      >
+        {alertList}
+      </div>
+    );
+  };
+
+  testToastr = () => {
+    return (
+      <div className="alertContainer alertTopRigh">
+        <div className="toast toast-success">
+          <div className="toast-message">
+            I do not think that means what you think it means.
+          </div>
+        </div>
+        <div className="toast toast-success">
+          <div className="toast-message">Have fun storming the castle!</div>
+        </div>
+        <div className="toast toast-success">
+          <div className="toast-message">
+            My name is Inigo Montoya. You killed my father. Prepare to die!
+          </div>
+        </div>
+      </div>
+    );
+  };
+  render() {
+    const { isModalVisible } = this.state;
+    return (
+      <div className="app">
+        {this.renderAlerts()}
+        <SampleFeature
+          title="Flex Payment"
+          subTitle="welcome to mercury system"
+          onAlertParent={this.onAlertParent}
+        />
+        <ModalComponent
+          title="Consuming Component Modal"
+          button1Class="is-info"
+          button1Visible={true}
+          button1Text="Ok"
+          button2Class=""
+          button2Text="Cancel"
+          button2Visible={false}
+          isVisible={isModalVisible}
+          onButton1Clicked={this.onModalClose}
+          onButton2Clicked={this.onModalClose}
+          onModalClose={this.onModalClose}
+        >
+          <div className="container">This is a modal </div>
+        </ModalComponent>
+      </div>
+    );
+  }
 }
+
+export default connect(mapStateToProps)(App);

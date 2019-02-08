@@ -1,5 +1,5 @@
 import * as actionTypes from '../constants/actionTypes';
 
-export function addArticle(payload) {
-  return { type: actionTypes.ADD_ARTICLE, payload };
+export function addMessage(payload) {
+  return { type: actionTypes.ADD_MESSAGE, payload };
 }

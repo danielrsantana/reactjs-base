@@ -1,13 +1,14 @@
 import React from "react";
 import { shallow } from "enzyme";
-import App from "./app";
+import AlertComponent from "./alert.component";
 
-describe("APP Sample Page", () => {
+describe("Sample Feature Test", () => {
   let wrapper: any = null;
+  let SAMPLE_MESSAGE: string = "this is a sample message";
 
   function setupTestContext(): void {
     wrapper = shallow(
-      <App />
+      <AlertComponent message={SAMPLE_MESSAGE} isDanger={true} />
     );
   }
 

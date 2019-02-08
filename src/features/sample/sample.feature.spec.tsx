@@ -12,11 +12,15 @@ describe("Sample Feature Test", () => {
     title = "sample title";
 
     wrapper = shallow(
-      <SampleFeature message={message} title={title} onAlertParent={() => {}} />
+      <SampleFeature
+        subTitle={message}
+        title={title}
+        onAlertParent={() => {}}
+      />
     );
   }
 
-  function usefulEnzymeCommands(){
+  function usefulEnzymeCommands() {
     // expect(wrapper.state().someId).be.equal(0);
     // expect(wrapper.state().someList).be.empty;
     // expect(wrapper.state().someObject).to.deep.equal({});
@@ -28,12 +32,5 @@ describe("Sample Feature Test", () => {
     setupTestContext();
     expect(wrapper.find(".sampleFeatureTitle").text()).toEqual(title);
     expect(wrapper.find(".sampleFeatureMessage").text()).toEqual(message);
-    expect(wrapper.instance().state.count).toEqual(0);
-  });
-
-  it("button click should increase one", () => {
-    const count: number = wrapper.instance().state.count;
-    wrapper.instance().onIncrement();
-    expect(wrapper.instance().state.count).toEqual(count + 1);
   });
 });

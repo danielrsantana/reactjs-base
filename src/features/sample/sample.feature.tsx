@@ -1,28 +1,55 @@
 import * as React from "react";
-import classnames from "classnames";
+import { connect } from "react-redux";
+import { addMessage } from "../../redux/actions/actions";
 import InputTextComponent from "../../components/inputText/inputText.component";
+import ButtonComponent from "../../components/button/button.component";
+import DropDownComponent from "../../components/dropdown/dropdown.component";
+
+const mapStateToProps = state => {
+  return { messages: state.messages };
+};
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addMessage: message => dispatch(addMessage(message))
+  };
+}
 
 export interface SampleFeatureProps {
   title: string;
-  message: string;
+  subTitle: string;
   onAlertParent: Function;
+  messages: Array<string>;
+  addMessage: Function;
 }
 
 export interface SampleFeatureState {
-  count: number;
+  notificationMessage: string;
+  notificationTypes: Array<any>;
 }
 
-export default class SampleFeature extends React.Component<
+export class SampleFeature extends React.Component<
   SampleFeatureProps,
   SampleFeatureState
 > {
-  constructor(props: SampleFeatureProps) {
+  constructor(props) {
     super(props);
 
     this.state = {
-      count: 0
+      notificationMessage: "",
+      notificationTypes: this.getNotificationTypes()
     };
   }
+
+  getNotificationTypes = (): Array<any> => {
+    return [
+      { id: 0, text: "Success", isActive: true },
+      { id: 1, text: "Info", isActive: true },
+      { id: 2, text: "Warning", isActive: true },
+      { id: 3, text: "Error", isActive: true }
+    ];
+  };
+
   returnTrueFunction(): boolean {
     return true;
   }
@@ -31,115 +58,104 @@ export default class SampleFeature extends React.Component<
     this.props.onAlertParent();
   };
 
-  onIncrement = (): void => {
-    this.setState((prevState: any) => {
-      const { count } = prevState;
-      return {
-        count: count + 1
-      };
-    });
+  onShowNotification = (): void => {
+    const { notificationMessage } = this.state;
+
+    if (notificationMessage) {
+      this.props.addMessage(notificationMessage);
+      this.setState({ notificationMessage: "" });
+    }
+  };
+
+  onNotificationMessageChanged = (event): void => {
+    this.setState({ notificationMessage: event.target.value });
+  };
+
+  renderNotificationArea = (): React.ReactNode => {
+    const { notificationTypes } = this.state;
+    return (
+      <div className="columns notification is-multiline">
+        <div className="column is-6">
+          <InputTextComponent
+            type="text"
+            placeHolder="Teste 1234"
+            label="Teste"
+            hasLabel={true}
+            labelPosition="top"
+            isHorizontal={true}
+            iconLeft="fas fa-user"
+            isNormal={true}
+            onChange={() => {}}
+          />
+        </div>
+        <div className="column is-3">
+          <InputTextComponent
+            type="text"
+            placeHolder="Notification Message"
+            label="message to show"
+            hasLabel={true}
+            labelPosition="top"
+            isHorizontal={true}
+            iconLeft="fas fa-envelope"
+            iconRight="fas fa-check"
+            isSuccess={true}
+            isValid={true}
+            onChange={this.onNotificationMessageChanged}
+          />
+        </div>
+        <div className="column is-3">
+          <DropDownComponent
+            label="Notification Type"
+            labelPosition="top"
+            selectText="Select"
+            data={notificationTypes}
+            onSelectedItemChanged={() => {}}
+          />
+        </div>
+      </div>
+    );
   };
 
   render() {
-    const { title, message } = this.props;
-    const { count } = this.state;
+    const { title, subTitle } = this.props;
 
     return (
-      <div className="sampleFeature container has-text-centered">
-        <div className="columns">
+      <div className="sampleFeature container">
+        <div className="notificationArea" />
+        <div className="columns is-multiline has-text-centered">
           <div className="column is-12">
             <div className="sampleFeatureTitle title">{title}</div>
           </div>
-        </div>
-        <div className="columns">
           <div className="column is-12">
-            <div className="sampleFeatureMessage notification">{message}</div>
+            <div className="sampleFeatureMessage">{subTitle}</div>
           </div>
         </div>
+        {this.renderNotificationArea()}
         <div className="columns">
-          <div className="column is-12">
-            <div className="notification has-text-left">
-              <InputTextComponent
-                type="text"
-                placeHolder="Teste 1234"
-                label="Teste"
-                hasLabel={true}
-                labelPosition="top"
-                isHorizontal={true}
-                iconLeft="fas fa-envelope"
-                iconRight="fas fa-user"
-                isNormal={true}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="colums">
-          <div className="column is-6">
-            <InputTextComponent
-              type="text"
-              placeHolder="Teste 1234"
-              label="UserName"
-              hasLabel={true}
-              labelPosition="top"
-              isHorizontal={true}
-              iconLeft="fas fa-user"
-              iconRight="fas fa-check"
-              isSuccess={true}
-              validationMessage="this username is available"
-              isValid={true}
+          <div className="column is-10">
+            <ButtonComponent
+              isLink={true}
+              isOutlined={true}
+              onClick={this.onAlertParent}
+              text="Open Modal"
             />
           </div>
-        </div>
-        <div className="columns">
-          <div className="column is-12 has-text-centered">
-            <div className="control">
-              <div className="tags has-addons is-unselectable is-narrow">
-                <span
-                  className={classnames({
-                    tag: true,
-                    "is-invisible": count === 0
-                  })}
-                >
-                  {count}
-                </span>
-                <a className="tag is-success" onClick={this.onIncrement}>
-                  Increment
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="columns">
-          <div className="column is-12 has-text-centered">
-            <a
-              className="button is-link is-outlined"
-              onClick={this.onAlertParent}
-            >
-              Alert Parent
-            </a>
-          </div>
-        </div>
-        <div className="columns">
-          <div className="field">
-            <label className="label">Username</label>
-            <div className="control has-icons-left has-icons-right">
-              <input
-                className="input is-success"
-                type="text"
-                placeholder="Text input"
-                value="bulma"
-              />
-              <span className="icon is-small is-left">
-                <i className="fas fa-user" />
-              </span>
-              <span className="icon is-small is-right">
-                <i className="fas fa-check" />
-              </span>
-            </div>
-            <p className="help is-success">This username is available</p>
+          <div className="column is-6">
+            <ButtonComponent
+              isLink={true}
+              isOutlined={true}
+              onClick={this.onShowNotification}
+              isPulledRight={true}
+              text="Show Notification"
+            />
           </div>
         </div>
       </div>
     );
   }
 }
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SampleFeature);

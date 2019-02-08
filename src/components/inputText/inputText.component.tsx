@@ -36,6 +36,7 @@ export interface InputTextComponentProps {
   isValidationCritical?: boolean;
   type: string;
   value?: string;
+  onChange: Function;
 }
 
 export interface InputTextComponentState {
@@ -55,7 +56,13 @@ export default class InputTextComponent extends React.Component<
     };
   }
 
-  renderAdvancedInputLabel() {
+  onInputTextChanged = event => {
+    if (this.props.onChange) {
+      this.props.onChange(event);
+    }
+  };
+
+  renderInputControlLeftLabel = () => {
     const { label } = this.props;
 
     return (
@@ -66,9 +73,9 @@ export default class InputTextComponent extends React.Component<
         <div className="field-body">{this.renderInputControl(true)}</div>
       </div>
     );
-  }
+  };
 
-  renderInputControlTip() {
+  renderInputControlTip = () => {
     const {
       isValid,
       validationMessage,
@@ -92,7 +99,7 @@ export default class InputTextComponent extends React.Component<
         {validationMessage}
       </p>
     );
-  }
+  };
 
   renderInputControlIcon = (
     iconSize?: string,
@@ -108,7 +115,7 @@ export default class InputTextComponent extends React.Component<
     }
   };
 
-  renderInputControlTopLabel = (isLabelAtLeft): React.ReactNode => {
+  renderInputControlTopLabel = (isLabelAtLeft: boolean): React.ReactNode => {
     const { label } = this.props;
 
     if (!isLabelAtLeft) {
@@ -116,7 +123,7 @@ export default class InputTextComponent extends React.Component<
     }
   };
 
-  renderInputControl(isLabelAtLeft) {
+  renderInputControl(isLabelAtLeft: boolean) {
     const {
       iconLeft,
       iconRight,
@@ -129,7 +136,8 @@ export default class InputTextComponent extends React.Component<
       isLoading,
       isPrimary,
       isRounded,
-      isSuccess
+      isSuccess,
+      value
     } = this.props;
 
     return (
@@ -154,6 +162,8 @@ export default class InputTextComponent extends React.Component<
             })}
             type={type}
             placeholder={placeHolder}
+            value={value}
+            onChange={this.onInputTextChanged}
           />
           {this.renderInputControlIcon(
             iconSize,
@@ -183,7 +193,7 @@ export default class InputTextComponent extends React.Component<
         : false;
 
     if (isLabelAtLeft) {
-      return this.renderAdvancedInputLabel();
+      return this.renderInputControlLeftLabel();
     } else {
       return this.renderInputControl(false);
     }
