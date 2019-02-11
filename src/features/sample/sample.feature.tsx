@@ -5,6 +5,7 @@ import InputTextComponent from "../../components/inputText/inputText.component";
 import ButtonComponent from "../../components/button/button.component";
 import DropDownComponent from "../../components/dropdown/dropdown.component";
 import RadioButtonComponent from "../../components/radiobutton/radiobutton.component";
+import * as alertUtils from "../../components/alert/alert.utils";
 
 const mapStateToProps = state => {
     return { messages: state.messages };
@@ -26,12 +27,15 @@ export interface SampleFeatureProps {
 
 export interface SampleFeatureState {
     notificationMessage: string;
-    notificationType: number;
+    notificationType: string;
     notificationTypes: Array<any>;
     notificationSides: Array<any>;
     notificationSide: string;
     notificationPositions: Array<any>;
     notificationPosition: string;
+    notificationTimedOptions: Array<any>;
+    notificationTimedOption: string;
+    notificationDuration: number;
 }
 
 export class SampleFeature extends React.Component<
@@ -43,110 +47,110 @@ export class SampleFeature extends React.Component<
 
         this.state = {
             notificationMessage: "",
-            notificationType: 0,
-            notificationTypes: this.getNotificationTypes(),
-            notificationSides: this.getNotificationSide(),
+            notificationType: "success",
+            notificationTypes: alertUtils.getNotificationTypes(),
+            notificationSides: alertUtils.getNotificationSide(),
             notificationSide: 'right',
-            notificationPositions: this.getNotificationPositions(),
-            notificationPosition: 'bottom',
+            notificationPositions: alertUtils.getNotificationPositions(),
+            notificationPosition: 'top',
+            notificationTimedOptions: alertUtils.getNotificationTimedOptions(),
+            notificationTimedOption: "yes",
+            notificationDuration: 5000,
         };
+
+        this.renderNotificationArea = this.renderNotificationArea.bind(this);
+        this.renderTimerField = this.renderTimerField.bind(this);
+        this.onAlertParent = this.onAlertParent.bind(this);
+        this.onNotificationMessageChanged = this.onNotificationMessageChanged.bind(this);
+        this.onNotificationDurationChanged = this.onNotificationDurationChanged.bind(this);
+        this.onSelectedNotificationSideChanged = this.onSelectedNotificationSideChanged.bind(this);
+        this.onSelectedNotificationPositionChanged = this.onSelectedNotificationPositionChanged.bind(this);
+        this.onSelectedNotificationTypeChanged = this.onSelectedNotificationTypeChanged.bind(this);
+        this.onSelectedNotificationTimedOptionChanged = this.onSelectedNotificationTimedOptionChanged.bind(this);
+        this.onShowNotification = this.onShowNotification.bind(this);
     }
 
-    getNotificationTypes = (): Array<any> => {
-        return [
-            { value: 'success', text: "Success", isActive: true },
-            { value: 'info', text: "Info", isActive: false },
-            { value: 'warning', text: "Warning", isActive: false },
-            { value: 'error', text: "Error", isActive: false }
-        ];
-    };
-
-    getNotificationSide = (): Array<any> => {
-        return [
-            { value: 'right', text: "Right", name: "notificationSide", isChecked: true },
-            { value: 'left', text: "Left", name: "notificationSide", isChecked: false },
-        ];
-    };
-
-    getNotificationPositions = (): Array<any> => {
-        return [
-            { value: 'top', text: "Top", name: "notificationPosition", isChecked: true },
-            { value: 'bottom', text: "Bottom", name: "notificationPosition", isChecked: false },
-        ];
-    };
-
-    onAlertParent = (): void => {
-        this.props.onAlertParent();
-    };
-
-    onShowNotification = (): void => {
-        const {
-            notificationMessage,
-            notificationType,
-            notificationPosition,
-            notificationSide
-        } = this.state;
+    onAlertParent(): void {
+        const { notificationMessage } = this.state;
 
         if (notificationMessage) {
-            const message: any = {
-                message: notificationMessage,
-                type: notificationType,
-                position: notificationPosition,
-                side: notificationSide
-            };
-
-            this.props.addMessage(message);
-            this.setState({ notificationMessage: "" });
+            this.props.onAlertParent(notificationMessage);
         }
     };
 
-    onNotificationMessageChanged = (event): void => {
+    onShowNotification(): void {
+        const {
+            notificationMessage,
+            notificationType,
+            notificationSide,
+            notificationPosition,
+            notificationTimedOption,
+            notificationDuration
+        } = this.state;
+
+        if (notificationMessage) {
+            const message: any = alertUtils.generateMessage(notificationMessage,
+                notificationPosition,
+                notificationSide,
+                notificationType,
+                (notificationTimedOption === "yes" ? notificationDuration : 0));
+
+            this.props.addMessage(message);
+        }
+    };
+
+    onNotificationMessageChanged(event: any): void {
         this.setState({
             notificationMessage: event.target.value
         });
     };
 
-    onSelectedNotificationTypeChanged = (event: any): void => {
+    onNotificationDurationChanged(event: any): void {
+        const duration: number = Number(event.target.value);
         this.setState({
-            notificationType: event.value
+            notificationDuration: duration
+        });
+    };
+
+    onSelectedNotificationTypeChanged(value: any): void {
+        this.setState({
+            notificationType: value
         });
     }
 
-    onSelectedNotificationPositionChanged = (event: any): void => {
+    onSelectedNotificationPositionChanged(event: any): void {
         this.setState({
             notificationPosition: event.value
         });
     }
 
-    onSelectedNotificationSideChanged = (event: any): void => {
+    onSelectedNotificationSideChanged(event: any): void {
         this.setState({
             notificationSide: event.value
         });
     }
 
-    renderNotificationArea = (): React.ReactNode => {
+    onSelectedNotificationTimedOptionChanged(event: any): void {
+        this.setState({
+            notificationTimedOption: event.value
+        });
+    }
+
+    renderNotificationArea(): React.ReactNode {
         const {
+            notificationType,
             notificationTypes,
+            notificationSide,
             notificationSides,
-            notificationPositions
+            notificationPosition,
+            notificationPositions,
+            notificationTimedOption,
+            notificationTimedOptions
         } = this.state;
 
         return (
             <div className="columns notification is-multiline">
-                <div className="column is-12">
-                    <InputTextComponent
-                        type="text"
-                        placeHolder="Teste 1234"
-                        label="Teste"
-                        hasLabel={true}
-                        labelPosition="top"
-                        isHorizontal={true}
-                        iconLeft="fas fa-user"
-                        isNormal={true}
-                        onChange={() => { }}
-                    />
-                </div>
-                <div className="column is-12">
+                <div className="column is-6">
                     <InputTextComponent
                         type="text"
                         placeHolder="Notification Message"
@@ -161,32 +165,68 @@ export class SampleFeature extends React.Component<
                         onChange={this.onNotificationMessageChanged}
                     />
                 </div>
-                <div className="column is-4">
+                <div className="column is-3">
                     <DropDownComponent
                         label="Type"
-                        labelPosition="left"
-                        selectText="Select"
+                        labelPosition="top"
+                        selectedValue={notificationType}
                         data={notificationTypes}
                         onSelectedItemChanged={this.onSelectedNotificationTypeChanged}
                     />
                 </div>
-                <div className="column is-4">
+                <div className="column is-3">
                     <RadioButtonComponent
                         data={notificationSides}
-                        labelPosition="left"
+                        labelPosition="top"
                         label="Side"
+                        selectedValue={notificationSide}
                         onSelectedItemChanged={this.onSelectedNotificationSideChanged} />
                 </div>
-                <div className="column is-4">
+                <div className="column is-3">
                     <RadioButtonComponent
                         data={notificationPositions}
-                        labelPosition="left"
+                        labelPosition="top"
                         label="Position"
+                        selectedValue={notificationPosition}
                         onSelectedItemChanged={this.onSelectedNotificationPositionChanged} />
                 </div>
+                <div className="column is-3">
+                    <RadioButtonComponent
+                        data={notificationTimedOptions}
+                        labelPosition="top"
+                        label="Timed"
+                        selectedValue={notificationTimedOption}
+                        onSelectedItemChanged={this.onSelectedNotificationTimedOptionChanged} />
+                </div>
+                {this.renderTimerField()}
             </div>
         );
     };
+
+    renderTimerField(): React.ReactNode {
+        const {
+            notificationTimedOption,
+            notificationDuration } = this.state;
+
+        if (notificationTimedOption === "yes") {
+            return (
+                <div className="column is-5">
+                    <InputTextComponent
+                        type="number"
+                        placeHolder="Duration"
+                        label="duration"
+                        hasLabel={true}
+                        labelPosition="left"
+                        isHorizontal={true}
+                        iconLeft="fas fa-clock"
+                        isSuccess={true}
+                        value={notificationDuration.toString()}
+                        onChange={this.onNotificationDurationChanged}
+                    />
+                </div>
+            );
+        }
+    }
 
     render() {
         const { title, subTitle } = this.props;
@@ -209,7 +249,7 @@ export class SampleFeature extends React.Component<
                             isLink={true}
                             isOutlined={true}
                             onClick={this.onAlertParent}
-                            text="Open Modal"
+                            text="Show on Modal"
                         />
                     </div>
                     <div className="column is-6">

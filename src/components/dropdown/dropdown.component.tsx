@@ -1,6 +1,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import * as shortid from "shortid";
+require("./dropdown.component.scss");
 
 const LEFT_POSITION: string = "left";
 
@@ -8,15 +9,14 @@ export interface DropDownComponentProps {
     label: string;
     labelPosition: string;
     data: Array<any>;
-    selectText: string;
     selectedValue?: string;
     onSelectedItemChanged?: Function;
+    isFullWidth?: boolean;
 }
 
 export interface DropDownComponentState {
     isActive: boolean;
     selectedValue?: string;
-    selectText: string;
 }
 
 export default class DropDownComponent extends React.Component<
@@ -26,34 +26,38 @@ export default class DropDownComponent extends React.Component<
     constructor(props) {
         super(props);
 
-        const { selectText, selectedValue } = this.props;
+        const { selectedValue } = this.props;
 
         this.state = {
             isActive: false,
             selectedValue: selectedValue,
-            selectText: selectText,
         };
+
+        this.onOpenCloseDropDown = this.onOpenCloseDropDown.bind(this);
+        this.onSelectedItemChanged = this.onSelectedItemChanged.bind(this);
+        this.renderDropdownLeftLabel = this.renderDropdownLeftLabel.bind(this);
+        this.renderDropdown = this.renderDropdown.bind(this);
+        this.renderDropdownItems = this.renderDropdownItems.bind(this);
     }
 
-    onOpenCloseDropDown = () => {
+    onOpenCloseDropDown() {
         this.setState((prevState: DropDownComponentState) => ({
             isActive: !prevState.isActive
         }));
     };
 
-    onSelectedItemChanged = (item: any) => {
+    onSelectedItemChanged(event: any) {
         this.setState({
-            selectedValue: item.value,
+            selectedValue: event.target.value,
             isActive: false,
-            selectText: item.text
         });
 
         if (this.props.onSelectedItemChanged) {
-            this.props.onSelectedItemChanged(item);
+            this.props.onSelectedItemChanged(event.target.value);
         }
     };
 
-    renderDropdownLeftLabel = () => {
+    renderDropdownLeftLabel() {
         const { label } = this.props;
 
         return (
@@ -64,53 +68,36 @@ export default class DropDownComponent extends React.Component<
         );
     };
 
-    renderDropdownLabel = (label?: string): React.ReactNode => {
+    renderDropdownLabel(label?: string): React.ReactNode {
         if (label) {
             return <label className="label">{label}</label>;
         }
     };
 
     renderDropdown(isLabelAtLeft: boolean) {
-        const { selectText, isActive } = this.state;
+        const { isActive } = this.state;
+        const { label, isFullWidth } = this.props;
 
         return (
             <div
                 className={classnames({
-                    inputTextComponent: !isLabelAtLeft,
+                    dropdownComponent: !isLabelAtLeft,
                     field: true,
                 })}
             >
-                {!isLabelAtLeft ? this.renderDropdownLabel() : null}
-                <div className="control is-fullwidth">
-                    <div
-                        className={classnames({
-                            dropdown: true,
-                            "is-active": isActive
-                        })}
-                    >
-                        <div className="dropdown-trigger">
-                            <button
-                                className="button"
-                                aria-haspopup="true"
-                                aria-controls="dropdown-menu"
-                                onClick={this.onOpenCloseDropDown}
-                            >
-                                <span>{selectText}</span>
-                                <span className="icon is-small">
-                                    <i className="fas fa-angle-down" aria-hidden="true" />
-                                </span>
-                            </button>
-                        </div>
-                        <div className="dropdown-menu" id="dropdown-menu" role="menu">
-                            {this.renderDropdownItems()}
-                        </div>
-                    </div>
+                {!isLabelAtLeft ? this.renderDropdownLabel(label) : null}
+                <div className={classnames({
+                    control: true,
+                    select: true,
+                    'is-fullwidth': (isFullWidth !== false)
+                })}>
+                    {this.renderDropdownItems()}
                 </div>
             </div>
         );
     }
 
-    renderDropdownItems = (): React.ReactNode => {
+    renderDropdownItems(): React.ReactNode {
         const { data } = this.props;
         const { selectedValue } = this.state;
         const dropdownItems: Array<React.ReactNode> = [];
@@ -118,22 +105,18 @@ export default class DropDownComponent extends React.Component<
         if (data) {
             data.forEach(item => {
                 dropdownItems.push(
-                    <a
-                        href="#"
-                        className={classnames({
-                            "dropdown-item": true,
-                            "is-active": selectedValue === item.value
-                        })}
-                        key={shortid.generate()}
-                        onClick={() => this.onSelectedItemChanged(item)}
-                    >
+                    <option value={item.value} key={shortid.generate()}>
                         {item.text}
-                    </a>
+                    </option>
                 );
             });
         }
 
-        return <div className="dropdown-content">{dropdownItems}</div>;
+        return <select
+            value={selectedValue}
+            onChange={this.onSelectedItemChanged}>
+            {dropdownItems}
+        </select>;
     };
 
     render() {

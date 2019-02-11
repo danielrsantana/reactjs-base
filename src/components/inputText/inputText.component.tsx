@@ -4,198 +4,204 @@ import classnames from "classnames";
 const LEFT_POSITION: string = "left";
 
 export interface InputTextComponentProps {
-  inputClass?: string;
-  isPrimary?: boolean;
-  isIconSmall?: boolean;
-  isIconMedium?: boolean;
-  isIconLarge?: boolean;
-  isLeft?: boolean;
-  isRight?: boolean;
-  isInfo?: boolean;
-  isSuccess?: boolean;
-  isWarningy?: boolean;
-  isDanger?: boolean;
-  isSmally?: boolean;
-  isMedium?: boolean;
-  isLarge?: boolean;
-  isRounded?: boolean;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  isHorizontal?: boolean;
-  isNormal?: boolean;
-  isVertical?: boolean;
-  iconLeft?: string;
-  iconRight?: string;
-  iconSize?: string;
-  hasLabel?: boolean;
-  label?: string;
-  labelPosition?: string;
-  placeHolder?: string;
-  isValid?: boolean;
-  validationMessage?: string;
-  isValidationCritical?: boolean;
-  type: string;
-  value?: string;
-  onChange: Function;
+    inputClass?: string;
+    isPrimary?: boolean;
+    isIconSmall?: boolean;
+    isIconMedium?: boolean;
+    isIconLarge?: boolean;
+    isLeft?: boolean;
+    isRight?: boolean;
+    isInfo?: boolean;
+    isSuccess?: boolean;
+    isWarningy?: boolean;
+    isDanger?: boolean;
+    isSmally?: boolean;
+    isMedium?: boolean;
+    isLarge?: boolean;
+    isRounded?: boolean;
+    isLoading?: boolean;
+    isDisabled?: boolean;
+    isHorizontal?: boolean;
+    isNormal?: boolean;
+    isVertical?: boolean;
+    iconLeft?: string;
+    iconRight?: string;
+    iconSize?: string;
+    hasLabel?: boolean;
+    label?: string;
+    labelPosition?: string;
+    placeHolder?: string;
+    isValid?: boolean;
+    validationMessage?: string;
+    isValidationCritical?: boolean;
+    type: string;
+    value?: string;
+    onChange: Function;
 }
 
 export interface InputTextComponentState {
-  value?: string;
+    value?: string;
 }
 
 export default class InputTextComponent extends React.Component<
-  InputTextComponentProps,
-  InputTextComponentState
-> {
-  constructor(props: InputTextComponentProps) {
-    super(props);
+    InputTextComponentProps,
+    InputTextComponentState
+    > {
+    constructor(props: InputTextComponentProps) {
+        super(props);
 
-    const { value } = this.props;
-    this.state = {
-      value: value
+        const { value } = this.props;
+        this.state = {
+            value: value
+        };
+
+        this.onInputTextChanged = this.onInputTextChanged.bind(this);
+        this.renderInputControlLeftLabel = this.renderInputControlLeftLabel.bind(this);
+        this.renderInputControlTip = this.renderInputControlTip.bind(this);
+        this.renderInputControlIcon = this.renderInputControlIcon.bind(this);
+        this.renderInputControlTopLabel = this.renderInputControlTopLabel.bind(this);
+    }
+
+    onInputTextChanged(event) {
+        if (this.props.onChange) {
+            this.props.onChange(event);
+        }
     };
-  }
 
-  onInputTextChanged = event => {
-    if (this.props.onChange) {
-      this.props.onChange(event);
-    }
-  };
+    renderInputControlLeftLabel() {
+        const { label } = this.props;
 
-  renderInputControlLeftLabel = () => {
-    const { label } = this.props;
+        return (
+            <div className="inputTextComponent field is-horizontal">
+                <div className="field-label is-normal">
+                    <label className="label">{label}</label>
+                </div>
+                <div className="field-body">{this.renderInputControl(true)}</div>
+            </div>
+        );
+    };
 
-    return (
-      <div className="inputTextComponent field is-horizontal">
-        <div className="field-label is-normal">
-          <label className="label">{label}</label>
-        </div>
-        <div className="field-body">{this.renderInputControl(true)}</div>
-      </div>
-    );
-  };
+    renderInputControlTip() {
+        const {
+            isValid,
+            validationMessage,
+            isDanger,
+            isInfo,
+            isSuccess,
+            isPrimary
+        } = this.props;
 
-  renderInputControlTip = () => {
-    const {
-      isValid,
-      validationMessage,
-      isDanger,
-      isInfo,
-      isSuccess,
-      isPrimary
-    } = this.props;
+        return (
+            <p
+                className={classnames({
+                    help: true,
+                    "is-invisible": !isValid,
+                    "is-danger": isDanger,
+                    "is-primary": isPrimary,
+                    "is-info": isInfo,
+                    "is-success": isSuccess
+                })}
+            >
+                {validationMessage}
+            </p>
+        );
+    };
 
-    return (
-      <p
-        className={classnames({
-          help: true,
-          "is-invisible": !isValid,
-          "is-danger": isDanger,
-          "is-primary": isPrimary,
-          "is-info": isInfo,
-          "is-success": isSuccess
-        })}
-      >
-        {validationMessage}
-      </p>
-    );
-  };
+    renderInputControlIcon(
+        iconSize?: string,
+        iconPosition?: string,
+        iconClass?: string
+    ): React.ReactNode {
+        if (iconPosition) {
+            return (
+                <span className={`icon ${iconSize} ${iconPosition}`}>
+                    <i className={iconClass} />
+                </span>
+            );
+        }
+    };
 
-  renderInputControlIcon = (
-    iconSize?: string,
-    iconPosition?: string,
-    iconClass?: string
-  ): React.ReactNode => {
-    if (iconPosition) {
-      return (
-        <span className={`icon ${iconSize} ${iconPosition}`}>
-          <i className={iconClass} />
-        </span>
-      );
-    }
-  };
+    renderInputControlTopLabel(isLabelAtLeft: boolean): React.ReactNode {
+        const { label } = this.props;
 
-  renderInputControlTopLabel = (isLabelAtLeft: boolean): React.ReactNode => {
-    const { label } = this.props;
+        if (!isLabelAtLeft) {
+            return <label className="label">{label}</label>;
+        }
+    };
 
-    if (!isLabelAtLeft) {
-      return <label className="label">{label}</label>;
-    }
-  };
-
-  renderInputControl(isLabelAtLeft: boolean) {
-    const {
-      iconLeft,
-      iconRight,
-      iconSize,
-      placeHolder,
-      type,
-      isDanger,
-      isDisabled,
-      isInfo,
-      isLoading,
-      isPrimary,
-      isRounded,
-      isSuccess,
-      value
-    } = this.props;
-
-    return (
-      <div
-        className={classnames({
-          inputTextComponent: !isLabelAtLeft,
-          field: true
-        })}
-      >
-        {this.renderInputControlTopLabel(isLabelAtLeft)}
-        <div className="control has-icons-left has-icons-right">
-          <input
-            className={classnames({
-              input: true,
-              "is-danger": isDanger,
-              "is-primary": isPrimary,
-              "is-info": isInfo,
-              "is-success": isSuccess,
-              "is-loading": isLoading,
-              "is-disabled": isDisabled,
-              "is-rounded": isRounded
-            })}
-            type={type}
-            placeholder={placeHolder}
-            value={value}
-            onChange={this.onInputTextChanged}
-          />
-          {this.renderInputControlIcon(
+    renderInputControl(isLabelAtLeft: boolean) {
+        const {
+            iconLeft,
+            iconRight,
             iconSize,
-            iconLeft ? "is-left" : "",
-            iconLeft
-          )}
-          {this.renderInputControlIcon(
-            iconSize,
-            iconRight ? "is-right" : "",
-            iconRight
-          )}
-        </div>
-        {this.renderInputControlTip()}
-      </div>
-    );
-  }
+            placeHolder,
+            type,
+            isDanger,
+            isDisabled,
+            isInfo,
+            isLoading,
+            isPrimary,
+            isRounded,
+            isSuccess,
+            value
+        } = this.props;
 
-  render() {
-    const { label, labelPosition, hasLabel } = this.props;
-
-    const isLabelAtLeft: boolean =
-      hasLabel &&
-      label &&
-      labelPosition &&
-      labelPosition.toLowerCase() === LEFT_POSITION
-        ? true
-        : false;
-
-    if (isLabelAtLeft) {
-      return this.renderInputControlLeftLabel();
-    } else {
-      return this.renderInputControl(false);
+        return (
+            <div
+                className={classnames({
+                    inputTextComponent: !isLabelAtLeft,
+                    field: true
+                })}
+            >
+                {this.renderInputControlTopLabel(isLabelAtLeft)}
+                <div className="control has-icons-left has-icons-right">
+                    <input
+                        className={classnames({
+                            input: true,
+                            "is-danger": isDanger,
+                            "is-primary": isPrimary,
+                            "is-info": isInfo,
+                            "is-success": isSuccess,
+                            "is-loading": isLoading,
+                            "is-disabled": isDisabled,
+                            "is-rounded": isRounded
+                        })}
+                        type={type}
+                        placeholder={placeHolder}
+                        value={value}
+                        onChange={this.onInputTextChanged}
+                    />
+                    {this.renderInputControlIcon(
+                        iconSize,
+                        iconLeft ? "is-left" : "",
+                        iconLeft
+                    )}
+                    {this.renderInputControlIcon(
+                        iconSize,
+                        iconRight ? "is-right" : "",
+                        iconRight
+                    )}
+                </div>
+                {this.renderInputControlTip()}
+            </div>
+        );
     }
-  }
+
+    render() {
+        const { label, labelPosition, hasLabel } = this.props;
+
+        const isLabelAtLeft: boolean =
+            hasLabel &&
+                label &&
+                labelPosition &&
+                labelPosition.toLowerCase() === LEFT_POSITION
+                ? true
+                : false;
+
+        if (isLabelAtLeft) {
+            return this.renderInputControlLeftLabel();
+        } else {
+            return this.renderInputControl(false);
+        }
+    }
 }

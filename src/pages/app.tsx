@@ -1,19 +1,21 @@
 import * as React from "react";
 import classnames from "classnames";
 import { connect } from "react-redux";
-import * as shortid from "shortid";
 import SampleFeature from "../features/sample/sample.feature";
 import ModalComponent from "../components/modal/modal.component";
 import AlertComponent from "../components/alert/alert.component";
 import { removeMessage } from "../redux/actions/actions";
+import { setInterval, clearInterval } from "timers";
+import { AlertModel } from "../components/alert/alert.model";
 require("./app.scss");
 
 export interface AppPageState {
     isModalVisible: boolean;
+    modalMessage: string;
 }
 
 export interface AppPageProps {
-    messages: Array<string>;
+    messages: Array<AlertModel>;
     removeMessage: Function;
 }
 
@@ -28,60 +30,86 @@ const mapStateToProps = state => {
 };
 
 export class App extends React.Component<AppPageProps, AppPageState> {
+    private alertRemovalQueue: Array<any> = [];
+    private isServiceRunning: boolean = false;
+    private serviceTimeout: NodeJS.Timeout;
+
     constructor(props) {
         super(props);
+
         this.state = {
-            isModalVisible: false
+            isModalVisible: false,
+            modalMessage: ""
         };
+
+        this.onAlertParent = this.onAlertParent.bind(this);
+        this.onAlertClicked = this.onAlertClicked.bind(this);
+        this.onAlertTimeElapsed = this.onAlertTimeElapsed.bind(this);
+        this.onButton1Clicked = this.onButton1Clicked.bind(this);
+        this.onButton2Clicked = this.onButton2Clicked.bind(this);
+        this.onModalClose = this.onModalClose.bind(this);
+        this.renderAlerts = this.renderAlerts.bind(this);
     }
 
-    onAlertParent = (): void => {
-        this.setState({ isModalVisible: true });
+    onAlertParent(modalMessage: string): void {
+        this.setState({
+            isModalVisible: true,
+            modalMessage
+        });
     };
 
-    onAlertClicked = (message): void => {
-        console.log(message);
+    onAlertClicked(message): void {
         this.props.removeMessage(message);
     }
 
-    onButton1Clicked = (): void => {
+    onAlertTimeElapsed(message): void {
+        this.props.removeMessage(message);
+    }
+
+    onButton1Clicked(): void {
         this.setState({ isModalVisible: false });
     };
 
-    onButton2Clicked = (): void => {
+    onButton2Clicked(): void {
         this.setState({ isModalVisible: false });
     };
 
-    onModalClose = (): void => {
+    onModalClose(): void {
         this.setState({ isModalVisible: false });
     };
 
-    renderAlerts = () => {
+    renderAlerts() {
         const { messages } = this.props;
         const alertList: Array<React.ReactNode> = [];
+        let position: string = "";
+        let side: string = "";
+
         if (messages && messages.length > 0) {
-            messages.forEach((item: any) => {
+            messages.forEach((item: AlertModel) => {
+                position = item.position;
+                side = item.side;
+
                 alertList.push(
                     <AlertComponent
-                        isSuccess={item.type === 'success'}
-                        isDanger={item.type === 'error'}
-                        isInfo={item.type === 'info'}
-                        isWarning={item.type === 'warning'}
-                        message={item.message}
+                        alert={item}
                         key={item.id}
-                        onClick={() => this.onAlertClicked(item)} />
+                        onClick={() => this.onAlertClicked(item)}
+                        onTimeElapsed={() => this.onAlertTimeElapsed(item)} />
                 );
             });
         }
+
+            //console.log(position);
+            //console.log(side);
 
         return (
             <div
                 className={classnames({
                     alertContainer: true,
-                    alertTopLeft: false,
-                    alertTopRight: true,
-                    alertBottomLeft: false,
-                    alertBottomRight: false
+                    alertTop: position === 'top',
+                    alertBottom: position === 'bottom',
+                    alertLeft: side === 'left',
+                    alertRight: side === 'right'
                 })}
             >
                 {alertList}
@@ -90,7 +118,7 @@ export class App extends React.Component<AppPageProps, AppPageState> {
     };
 
     render() {
-        const { isModalVisible } = this.state;
+        const { isModalVisible, modalMessage } = this.state;
         return (
             <div className="app">
                 {this.renderAlerts()}
@@ -100,7 +128,7 @@ export class App extends React.Component<AppPageProps, AppPageState> {
                     onAlertParent={this.onAlertParent}
                 />
                 <ModalComponent
-                    title="Consuming Component Modal"
+                    title="Alert on Modal"
                     button1Class="is-info"
                     button1Visible={true}
                     button1Text="Ok"
@@ -112,7 +140,7 @@ export class App extends React.Component<AppPageProps, AppPageState> {
                     onButton2Clicked={this.onModalClose}
                     onModalClose={this.onModalClose}
                 >
-                    <div className="container">This is a modal </div>
+                    <div>{modalMessage}</div>
                 </ModalComponent>
             </div>
         );

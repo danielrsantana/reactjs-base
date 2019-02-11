@@ -1,6 +1,7 @@
 import * as React from "react";
 import classnames from "classnames";
 import * as shortid from "shortid";
+require("./radiobutton.component.scss");
 
 const LEFT_POSITION: string = "left";
 
@@ -59,7 +60,7 @@ export default class RadioButtonComponent extends React.Component<
 
     renderRadioButton(isLabelAtLeft: boolean) {
         const radioButtonList: Array<React.ReactNode> = [];
-        const { data } = this.props;
+        const { label, data } = this.props;
         const { selectedValue } = this.state;
 
         if (data && data.length > 0) {
@@ -70,7 +71,7 @@ export default class RadioButtonComponent extends React.Component<
                             checked={item.value === selectedValue}
                             disabled={item.isDisabled}
                             onChange={() => this.onSelectedItemChanged(item)} />
-                        {item.text}
+                        <span>{item.text}</span>
                     </label>
                 );
             });
@@ -83,7 +84,7 @@ export default class RadioButtonComponent extends React.Component<
                     field: true
                 })}
             >
-                {!isLabelAtLeft ? this.renderComponentLabel() : null}
+                {!isLabelAtLeft ? this.renderComponentLabel(label) : null}
                 <div className="control">
                     {radioButtonList}
                 </div>
