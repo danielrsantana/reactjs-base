@@ -58,7 +58,7 @@ export class SampleFeature extends React.Component<
             notificationDuration: 5000,
         };
 
-        this.renderNotificationArea = this.renderNotificationArea.bind(this);
+        this.renderNotificationControls = this.renderNotificationControls.bind(this);
         this.renderTimerField = this.renderTimerField.bind(this);
         this.onAlertParent = this.onAlertParent.bind(this);
         this.onNotificationMessageChanged = this.onNotificationMessageChanged.bind(this);
@@ -136,7 +136,7 @@ export class SampleFeature extends React.Component<
         });
     }
 
-    renderNotificationArea(): React.ReactNode {
+    renderNotificationControls(): React.ReactNode {
         const {
             notificationType,
             notificationTypes,
@@ -149,12 +149,12 @@ export class SampleFeature extends React.Component<
         } = this.state;
 
         return (
-            <div className="columns notification is-multiline">
+            <div className="columns box is-multiline ">
                 <div className="column is-6">
                     <InputTextComponent
                         type="text"
                         placeHolder="Notification Message"
-                        label="text"
+                        label="Text"
                         hasLabel={true}
                         labelPosition="top"
                         isHorizontal={true}
@@ -214,9 +214,9 @@ export class SampleFeature extends React.Component<
                     <InputTextComponent
                         type="number"
                         placeHolder="Duration"
-                        label="duration"
+                        label="Duration"
                         hasLabel={true}
-                        labelPosition="left"
+                        labelPosition="top"
                         isHorizontal={true}
                         iconLeft="fas fa-clock"
                         isSuccess={true}
@@ -232,17 +232,17 @@ export class SampleFeature extends React.Component<
         const { title, subTitle } = this.props;
 
         return (
-            <div className="sampleFeature container">
+            <div className="sampleFeature">
                 <div className="notificationArea" />
-                <div className="columns is-multiline has-text-centered">
-                    <div className="column is-12">
-                        <div className="sampleFeatureTitle title">{title}</div>
+                <div className="box columns is-multiline has-text-centered has-background-white-ter is-unselectable">
+                    <div className="column is-12 is-paddingless">
+                        <div className="sampleFeatureTitle title has-text-link">{title}</div>
                     </div>
-                    <div className="column is-12">
-                        <div className="sampleFeatureMessage">{subTitle}</div>
+                    <div className="column is-12 is-paddingless">
+                        <div className="sampleFeatureMessage subtitle">{subTitle}</div>
                     </div>
                 </div>
-                {this.renderNotificationArea()}
+                {this.renderNotificationControls()}
                 <div className="columns">
                     <div className="column is-6">
                         <ButtonComponent
@@ -256,7 +256,6 @@ export class SampleFeature extends React.Component<
                         <div className="control is-pulled-right">
                             <ButtonComponent
                                 isLink={true}
-                                isOutlined={true}
                                 onClick={this.onShowNotification}
                                 isPulledRight={true}
                                 text="Show Notification"

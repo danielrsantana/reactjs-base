@@ -1,15 +1,22 @@
 import * as React from "react";
 import classnames from "classnames";
-import * as shortid from 'shortid';
 import { AlertModel } from "./alert.model";
 require("./alert.component.scss");
 
+/**
+ * AlertComponent PropTypes representation
+ * @constructor
+ * @param {AlertModel} alert - The alert object to be used when displaying a message
+ * @param {Function} onClick - Callback for the onClick event
+ * @param {Function} onTimeElapsed - Callback for the onTimeElapsed event
+ */
 export interface AlertComponentProps {
     alert: AlertModel;
     onClick?: Function;
     onTimeElapsed?: Function;
 }
 
+/** Alert component used to display success/error in page alerts */
 export default class AlertComponent extends React.Component<
     AlertComponentProps,
     {}
