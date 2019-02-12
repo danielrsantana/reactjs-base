@@ -1,6 +1,21 @@
 import * as React from "react";
 import classnames from "classnames";
 
+/**
+ * ModalComponent props interface representation
+ * @interface
+ * @param {string} button1Class - (optional) CSS Class of the button1
+ * @param {string} button1Text - (optional) Text of the button1
+ * @param {boolean} button1Visible - (optional) True/false value indicating that the button1 should be or not displayed
+ * @param {string} button2Class - (optional) CSS Class of the button2
+ * @param {string} button2Text - (optional) Text of the button2
+ * @param {string} button2Visible - (optional) True/false value indicating that the button2 should be or not displayed
+ * @param {string} isVisible - True/false value indicating that the component should be or not displayed
+ * @param {string} title - (optional) Component title
+ * @param {string} onModalClose - Callback for the onModalClose event
+ * @param {string} onButton1Clicked - Callback for the onButton1Clicked event
+ * @param {string} onButton2Clicked - Callback for the onButton2Clicked event
+ */
 export interface ModalComponentProps {
   button1Class?: string;
   button1Text?: string;
@@ -9,13 +24,15 @@ export interface ModalComponentProps {
   button2Text?: string;
   button2Visible?: boolean;
   isVisible: boolean;
-  title: string;
+  title?: string;
   onModalClose?: Function;
   onButton1Clicked?: Function;
   onButton2Clicked?: Function;
-  children?: React.ReactNode;
 }
 
+/**  ModalComponent state interface representation
+ * @param {boolean} isVisible - Visible state (on/off) of the modal
+ */
 export interface ModalComponentState {
   isVisible: boolean;
 }

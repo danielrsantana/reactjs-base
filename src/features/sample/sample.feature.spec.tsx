@@ -1,36 +1,24 @@
 import React from "react";
 import { shallow } from "enzyme";
 import SampleFeature from "./sample.feature";
+import * as common from "../../components/common/constants.common";
 
 describe("Sample Feature Test", () => {
   let wrapper: any = null;
-  let message: string;
-  let title: string;
 
   function setupTestContext(): void {
-    message = "sample message";
-    title = "sample title";
-
     wrapper = shallow(
       <SampleFeature
-        subTitle={message}
-        title={title}
+        subTitle={common.default.SAMPLE_TEXT}
+        title={common.default.SAMPLE_TEXT}
         onAlertParent={() => {}}
       />
     );
   }
 
-  function usefulEnzymeCommands() {
-    // expect(wrapper.state().someId).be.equal(0);
-    // expect(wrapper.state().someList).be.empty;
-    // expect(wrapper.state().someObject).to.deep.equal({});
-    // expect(wrapper.find('some css selector')).to.have.lengthOf(1);
-    // expect(wrapper.state().someText).to.have.string(event.target.value);
-  }
-
   it("should render properly", () => {
     setupTestContext();
-    expect(wrapper.find(".sampleFeatureTitle").text()).toEqual(title);
-    expect(wrapper.find(".sampleFeatureMessage").text()).toEqual(message);
+    expect(wrapper.find(".sampleFeatureTitle").text()).toEqual(common.default.SAMPLE_TEXT);
+    expect(wrapper.find(".sampleFeatureMessage").text()).toEqual(common.default.SAMPLE_TEXT);
   });
 });

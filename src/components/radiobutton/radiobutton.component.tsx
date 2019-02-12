@@ -1,22 +1,36 @@
 import * as React from "react";
 import classnames from "classnames";
 import * as shortid from "shortid";
+import * as common from "../common/constants.common";
+import { DataItemModel } from "../common/dataItem.model";
+
 require("./radiobutton.component.scss");
 
-const LEFT_POSITION: string = "left";
-
+/**
+ * CheckBoxComponent props interface representation
+ * @interface
+ * @param {string} label - (optional) Label to be displayed for the radiobutton
+ * @param {string} labelPosition - (optional) Position of the label (top/left)
+ * @param {Array<DataItemModel>} data - (optional) List of items to be displayed
+ * @param {string} selectedValue - (optional) Initial selected item
+ * @param {string} onSelectedItemChanged - Callback for the onSelectedItemChanged event
+ */
 export interface RadioButtonComponentProps {
     label?: string;
     labelPosition?: string;
-    data?: Array<any>;
+    data?: Array<DataItemModel>;
     selectedValue?: string;
     onSelectedItemChanged?: Function;
 }
 
+/**  RadioButtonComponent state interface representation 
+ * @param {string} isChecked - (optional) Currently selected item
+*/
 export interface RadioButtonComponentState {
     selectedValue?: string;
 }
 
+/** RadioButtonComponent class */
 export default class RadioButtonComponent extends React.Component<
     RadioButtonComponentProps,
     RadioButtonComponentState
@@ -96,7 +110,7 @@ export default class RadioButtonComponent extends React.Component<
         const { label, labelPosition } = this.props;
 
         const isLabelAtLeft: boolean =
-            label && labelPosition && labelPosition.toLowerCase() === LEFT_POSITION
+            label && labelPosition && labelPosition.toLowerCase() === common.default.LEFT
                 ? true
                 : false;
 

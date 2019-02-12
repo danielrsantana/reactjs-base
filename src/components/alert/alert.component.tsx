@@ -1,11 +1,13 @@
 import * as React from "react";
 import classnames from "classnames";
 import { AlertModel } from "./alert.model";
+import * as common from "../common/constants.common";
+
 require("./alert.component.scss");
 
 /**
- * AlertComponent PropTypes representation
- * @constructor
+ * AlertComponent interface representation
+ * @interface
  * @param {AlertModel} alert - The alert object to be used when displaying a message
  * @param {Function} onClick - Callback for the onClick event
  * @param {Function} onTimeElapsed - Callback for the onTimeElapsed event
@@ -23,8 +25,6 @@ export default class AlertComponent extends React.Component<
     > {
     constructor(props) {
         super(props);
-
-        this.onAlertClick = this.onAlertClick.bind(this);
     }
 
     componentDidMount(): void {
@@ -39,7 +39,7 @@ export default class AlertComponent extends React.Component<
         }
     }
 
-    onAlertClick(event): void {
+    onAlertClick = (event): void => {
         if (this.props.onClick) {
             this.props.onClick(event);
         }
@@ -53,10 +53,10 @@ export default class AlertComponent extends React.Component<
                 <div
                     className={classnames({
                         alertComponentMessage: true,
-                        "is-danger": alert.type === 'error',
-                        "is-info": alert.type === 'info',
-                        "is-warning": alert.type === 'warning',
-                        "is-success": alert.type === 'success'
+                        "is-danger": alert.type === common.default.ERROR,
+                        "is-info": alert.type === common.default.INFO,
+                        "is-warning": alert.type === common.default.WARNING,
+                        "is-success": alert.type === common.default.SUCCESS
                     })}
                 >
                     {alert.text}
