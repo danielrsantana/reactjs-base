@@ -21,7 +21,6 @@ describe("Sample Feature Test", () => {
         isValid={false}
         isValidationCritical={true}
         validationMessage={common.default.SAMPLE_TEXT}
-        onChange={this.onNotificationMessageChanged}
       />
     );
   }

@@ -58,42 +58,17 @@ export class SampleFeature extends React.Component<
       notificationTimedOption: "yes",
       notificationDuration: 5000
     };
-
-    this.renderNotificationControls = this.renderNotificationControls.bind(
-      this
-    );
-    this.renderTimerField = this.renderTimerField.bind(this);
-    this.onAlertParent = this.onAlertParent.bind(this);
-    this.onNotificationMessageChanged = this.onNotificationMessageChanged.bind(
-      this
-    );
-    this.onNotificationDurationChanged = this.onNotificationDurationChanged.bind(
-      this
-    );
-    this.onSelectedNotificationSideChanged = this.onSelectedNotificationSideChanged.bind(
-      this
-    );
-    this.onSelectedNotificationPositionChanged = this.onSelectedNotificationPositionChanged.bind(
-      this
-    );
-    this.onSelectedNotificationTypeChanged = this.onSelectedNotificationTypeChanged.bind(
-      this
-    );
-    this.onSelectedNotificationTimedOptionChanged = this.onSelectedNotificationTimedOptionChanged.bind(
-      this
-    );
-    this.onShowNotification = this.onShowNotification.bind(this);
   }
 
-  onAlertParent(): void {
+  onAlertParent = (): void => {
     const { notificationMessage } = this.state;
 
     if (notificationMessage) {
       this.props.onAlertParent(notificationMessage);
     }
-  }
+  };
 
-  onShowNotification(): void {
+  onShowNotification = (): void => {
     const {
       notificationMessage,
       notificationType,
@@ -114,46 +89,46 @@ export class SampleFeature extends React.Component<
 
       this.props.addMessage(message);
     }
-  }
+  };
 
-  onNotificationMessageChanged(event: any): void {
+  onNotificationMessageChanged = (event: any): void => {
     this.setState({
       notificationMessage: event.target.value
     });
-  }
+  };
 
-  onNotificationDurationChanged(event: any): void {
+  onNotificationDurationChanged = (event: any): void => {
     const duration: number = Number(event.target.value);
     this.setState({
       notificationDuration: duration
     });
-  }
+  };
 
-  onSelectedNotificationTypeChanged(value: any): void {
+  onSelectedNotificationTypeChanged = (value: any): void => {
     this.setState({
       notificationType: value
     });
-  }
+  };
 
-  onSelectedNotificationPositionChanged(event: any): void {
+  onSelectedNotificationPositionChanged = (event: any): void => {
     this.setState({
       notificationPosition: event.value
     });
-  }
+  };
 
-  onSelectedNotificationSideChanged(event: any): void {
+  onSelectedNotificationSideChanged = (event: any): void => {
     this.setState({
       notificationSide: event.value
     });
-  }
+  };
 
-  onSelectedNotificationTimedOptionChanged(event: any): void {
+  onSelectedNotificationTimedOptionChanged = (event: any): void => {
     this.setState({
       notificationTimedOption: event.value
     });
-  }
+  };
 
-  renderNotificationControls(): React.ReactNode {
+  renderNotificationControls = (): React.ReactNode => {
     const {
       notificationType,
       notificationTypes,
@@ -220,9 +195,9 @@ export class SampleFeature extends React.Component<
         {this.renderTimerField()}
       </div>
     );
-  }
+  };
 
-  renderTimerField(): React.ReactNode {
+  renderTimerField = (): React.ReactNode => {
     const { notificationTimedOption, notificationDuration } = this.state;
 
     if (notificationTimedOption === "yes") {
@@ -241,7 +216,7 @@ export class SampleFeature extends React.Component<
         </div>
       );
     }
-  }
+  };
 
   render() {
     const { title, subTitle } = this.props;

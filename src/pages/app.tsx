@@ -6,7 +6,7 @@ import ModalComponent from "../components/modal/modal.component";
 import AlertComponent from "../components/alert/alert.component";
 import { removeMessage } from "../redux/actions/actions";
 import { AlertModel } from "../components/alert/alert.model";
-require("./app.scss");
+import "./app.scss";
 
 export interface AppPageState {
   isModalVisible: boolean;

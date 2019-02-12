@@ -2,8 +2,7 @@ import * as React from "react";
 import classnames from "classnames";
 import { AlertModel } from "./alert.model";
 import * as common from "../common/constants.common";
-
-require("./alert.component.scss");
+import "./alert.component.scss";
 
 /**
  * AlertComponent interface representation

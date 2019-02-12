@@ -45,7 +45,6 @@ import * as common from "../common/constants.common";
  * @param {boolean} isValid - (optional) True/false representing if the component is valid
  * @param {boolean} validationMessage - (optional) Message to be displayed bellow the component
  * @param {boolean} isValidationCritical - (optional) True/false representing if the validation should be displayed as critical
- * @param {string} onSelectedItemChanged - Callback for the onSelectedItemChanged event
  */
 export interface InputTextComponentProps {
   label?: string;
@@ -88,7 +87,7 @@ export interface InputTextComponentProps {
   isValid?: boolean;
   validationMessage?: string;
   isValidationCritical?: boolean;
-  onChange: Function;
+  onChange?: Function;
 }
 
 /**  InputTextComponent state interface representation

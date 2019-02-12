@@ -3,8 +3,8 @@ import classnames from "classnames";
 import * as shortid from "shortid";
 import * as common from "../common/constants.common";
 import { DataItemModel } from "../common/dataItem.model";
-
-require("./dropdown.component.scss");
+import "./dropdown.component.scss";
+// require("./dropdown.component.scss");
 
 /**
  * DropDownComponent props interface representation

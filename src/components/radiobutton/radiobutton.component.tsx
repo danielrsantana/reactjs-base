@@ -4,7 +4,7 @@ import * as shortid from "shortid";
 import * as common from "../common/constants.common";
 import { DataItemModel } from "../common/dataItem.model";
 
-require("./radiobutton.component.scss");
+import "./radiobutton.component.scss";
 
 /**
  * CheckBoxComponent props interface representation
