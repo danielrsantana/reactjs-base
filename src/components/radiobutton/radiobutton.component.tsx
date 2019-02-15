@@ -1,6 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
-import * as shortid from "shortid";
+import shortid from "shortid";
 import * as common from "../common/constants.common";
 import { DataItemModel } from "../common/dataItem.model";
 
@@ -35,7 +35,7 @@ export default class RadioButtonComponent extends React.Component<
     RadioButtonComponentProps,
     RadioButtonComponentState
     > {
-    constructor(props) {
+    constructor(props:RadioButtonComponentProps) {
         super(props);
 
         const { selectedValue } = this.props;

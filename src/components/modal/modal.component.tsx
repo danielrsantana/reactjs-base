@@ -61,20 +61,20 @@ export default class ModalComponent extends React.Component<
 
   onButton1Clicked = (event: any): void => {
     if (this.props.onButton1Clicked) {
-      this.props.onButton1Clicked();
+      this.props.onButton1Clicked(event);
     }
   };
 
-  onButton2Clicked = (event: any): void => {
+  onButton2Clicked = (): void => {
     if (this.props.onButton2Clicked) {
-      this.props.onButton2Clicked();
+      this.props.onButton2Clicked(event);
     }
   };
 
   onModalCloseRequested = (event: any): void => {
     this.setState({ isVisible: false });
     if (this.props.onModalClose) {
-      this.props.onModalClose();
+      this.props.onModalClose(event);
     }
   };
 

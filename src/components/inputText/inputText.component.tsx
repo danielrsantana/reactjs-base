@@ -111,7 +111,7 @@ export default class InputTextComponent extends React.Component<
     };
   }
 
-  onInputTextChanged = (event): void => {
+  onInputTextChanged = (event:any): void => {
     if (this.props.onChange) {
       this.props.onChange(event);
     }

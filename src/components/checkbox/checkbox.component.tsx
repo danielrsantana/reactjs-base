@@ -33,7 +33,7 @@ export default class CheckBoxComponent extends React.Component<
   CheckBoxComponentProps,
   CheckBoxComponentState
 > {
-  constructor(props) {
+  constructor(props:CheckBoxComponentProps) {
     super(props);
 
     const { isChecked } = this.props;

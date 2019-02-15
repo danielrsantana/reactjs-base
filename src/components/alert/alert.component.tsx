@@ -22,7 +22,7 @@ export default class AlertComponent extends React.Component<
     AlertComponentProps,
     {}
     > {
-    constructor(props) {
+    constructor(props:AlertComponentProps) {
         super(props);
     }
 
@@ -38,7 +38,7 @@ export default class AlertComponent extends React.Component<
         }
     }
 
-    onAlertClick = (event): void => {
+    onAlertClick = (event:any): void => {
         if (this.props.onClick) {
             this.props.onClick(event);
         }

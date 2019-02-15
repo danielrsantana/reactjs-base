@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { addMessage } from "../../redux/actions/actions";
+import { addMessage } from "../../redux/actions";
 import InputTextComponent from "../../components/inputText/inputText.component";
 import ButtonComponent from "../../components/button/button.component";
 import DropDownComponent from "../../components/dropdown/dropdown.component";
@@ -8,13 +8,13 @@ import RadioButtonComponent from "../../components/radiobutton/radiobutton.compo
 import * as alertUtils from "../../components/alert/alert.utils";
 import * as common from "../../components/common/constants.common";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state:SampleFeatureProps) => {
   return { messages: state.messages };
 };
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch:any) {
   return {
-    addMessage: message => dispatch(addMessage(message))
+    addMessage: (message:Array<string>) => dispatch(addMessage(message))
   };
 }
 
@@ -43,19 +43,19 @@ export class SampleFeature extends React.Component<
   SampleFeatureProps,
   SampleFeatureState
 > {
-  constructor(props) {
+  constructor(props:SampleFeatureProps) {
     super(props);
 
     this.state = {
       notificationMessage: "",
-      notificationType: "success",
+      notificationType: common.default.SUCCESS,
       notificationTypes: alertUtils.getNotificationTypes(),
       notificationSides: alertUtils.getNotificationSide(),
-      notificationSide: "right",
+      notificationSide: common.default.RIGHT,
       notificationPositions: alertUtils.getNotificationPositions(),
-      notificationPosition: "top",
+      notificationPosition: common.default.TOP,
       notificationTimedOptions: alertUtils.getNotificationTimedOptions(),
-      notificationTimedOption: "yes",
+      notificationTimedOption: common.default.YES,
       notificationDuration: 5000
     };
   }
@@ -84,7 +84,7 @@ export class SampleFeature extends React.Component<
         notificationPosition,
         notificationSide,
         notificationType,
-        notificationTimedOption === "yes" ? notificationDuration : 0
+        notificationTimedOption === common.default.YES ? notificationDuration : 0
       );
 
       this.props.addMessage(message);

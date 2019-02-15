@@ -1,6 +1,6 @@
 import * as React from "react";
 import classnames from "classnames";
-import * as shortid from "shortid";
+import shortid from "shortid";
 import * as common from "../common/constants.common";
 import { DataItemModel } from "../common/dataItem.model";
 import "./dropdown.component.scss";
@@ -86,7 +86,7 @@ export default class DropDownComponent extends React.Component<
   DropDownComponentProps,
   DropDownComponentState
 > {
-  constructor(props) {
+  constructor(props:DropDownComponentProps) {
     super(props);
 
     const { selectedValue } = this.props;

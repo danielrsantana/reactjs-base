@@ -1,24 +1,12 @@
-.alertContainer {
-    position: fixed;
-    z-index: 999999;
-    pointer-events: none;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+@import "./node_modules/bulma/bulma.sass";
+$fa-font-path : "~@fortawesome/fontawesome-free/webfonts";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "./node_modules/@fortawesome/fontawesome-free/scss/solid.scss";
 
-    &.alertTop {
-        top: 12px;
-    }
+body {
+  padding: 2rem;
 
-    &.alertBottom {
-        bottom: 12px;
-    }
-
-    &.alertRight {
-        right: 12px;
-    }
-
-    &.alertLeft {
-        left: 12px;
-    }
+  .appContent{
+    margin-top: 1rem;
+  }
 }

@@ -1,5 +1,5 @@
 import { AlertModel } from "./alert.model";
-import * as shortid from "shortid";
+import shortid from "shortid";
 import { DataItemModel } from "../common/dataItem.model";
 import * as common from "../common/constants.common";
 

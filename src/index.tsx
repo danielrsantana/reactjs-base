@@ -1,15 +1,16 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-
+import React from "react";
+import { render } from "react-dom";
+import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import App from "./pages/app";
-import { store } from "./redux/store";
 
-require("./assets/scss/app.scss");
+declare let module: any;
 
-ReactDOM.render(
+render(
   <Provider store={store}>
-    <App />
+    <App store={store} />
   </Provider>,
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root")
 );
+
+module.hot && module.hot.accept();

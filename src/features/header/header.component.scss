@@ -1,0 +1,14 @@
+.headerComponent {
+  border-bottom: 1px solid #ccc;
+  
+  .headerComponentNavigation .icon-bar {
+    margin-top:2rem;
+    a {
+      padding: 0.5rem;
+    }
+
+    i{
+      margin-right: 0.5rem;
+    }
+  }
+}
