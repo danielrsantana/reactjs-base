@@ -11,6 +11,7 @@ import "./componentsViewer.page.scss";
 export interface AppPageState {
   isModalVisible: boolean;
   modalMessage: string;
+  messages?: Array<AlertModel>;
 }
 
 export interface AppPageProps {
@@ -18,28 +19,34 @@ export interface AppPageProps {
   removeMessage: Function;
 }
 
-function mapDispatchToProps(dispatch:any) {
+function mapDispatchToProps(dispatch: any) {
   return {
-    removeMessage: (message:Array<AlertModel>) => dispatch(removeMessage(message))
+    removeMessage: (message: Array<AlertModel>) =>
+      dispatch(removeMessage(message))
   };
 }
 
-const mapStateToProps = (state:any) => {
+const mapStateToProps = (state: any) => {
+  console.log("trying...");
   return { messages: state.messages };
 };
 
-export class ComponentsViewer extends React.Component<AppPageProps, AppPageState> {
-  private alertRemovalQueue: Array<any> = [];
-  private isServiceRunning: boolean = false;
-  private serviceTimeout: NodeJS.Timeout;
-
-  constructor(props:AppPageProps) {
+export class ComponentsViewer extends React.Component<
+  AppPageProps,
+  AppPageState
+> {
+  constructor(props: AppPageProps) {
     super(props);
 
     this.state = {
       isModalVisible: false,
       modalMessage: ""
     };
+  }
+
+  componentDidUpdate() {
+    console.log(this.props.messages);
+    console.log(this.state.messages);
   }
 
   onAlertParent = (modalMessage: string): void => {
@@ -49,11 +56,11 @@ export class ComponentsViewer extends React.Component<AppPageProps, AppPageState
     });
   };
 
-  onAlertClicked = (message:AlertModel): void => {
+  onAlertClicked = (message: AlertModel): void => {
     this.props.removeMessage(message);
   };
 
-  onAlertTimeElapsed = (message:AlertModel): void => {
+  onAlertTimeElapsed = (message: AlertModel): void => {
     this.props.removeMessage(message);
   };
 
@@ -71,6 +78,8 @@ export class ComponentsViewer extends React.Component<AppPageProps, AppPageState
 
   renderAlerts = (): React.ReactNode => {
     const { messages } = this.props;
+    console.log(messages);
+
     const alertList: Array<React.ReactNode> = [];
     let position: string = "";
     let side: string = "";
@@ -79,7 +88,7 @@ export class ComponentsViewer extends React.Component<AppPageProps, AppPageState
       messages.forEach((item: AlertModel) => {
         position = item.position;
         side = item.side;
-
+        console.log(item);
         alertList.push(
           <AlertComponent
             alert={item}
@@ -109,11 +118,11 @@ export class ComponentsViewer extends React.Component<AppPageProps, AppPageState
   render() {
     const { isModalVisible, modalMessage } = this.state;
     return (
-      <div className="app">
+      <div className="componentsViewer">
         {this.renderAlerts()}
         <SampleFeature
-          title="Flex Payment"
-          subTitle="welcome to mercury system"
+          title="Components Viewer"
+          subTitle=""
           onAlertParent={this.onAlertParent}
         />
         <ModalComponent

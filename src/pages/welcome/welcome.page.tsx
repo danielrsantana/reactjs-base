@@ -1,5 +1,4 @@
 import * as React from "react";
-import { TestComponent } from "../../components/test/test";
 
 export interface WelcomePageProps {
   compiler: string,
@@ -14,7 +13,7 @@ class WelcomePage extends React.Component<WelcomePageProps, {}> {
     return (
       <React.Fragment>
         <h1>
-          This is THE {framework} application using {compiler} with {bundler}
+          This is THE {framework} application using {compiler} with {bundler}...
         </h1>
       </React.Fragment>
     );

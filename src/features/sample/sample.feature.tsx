@@ -7,6 +7,7 @@ import DropDownComponent from "../../components/dropdown/dropdown.component";
 import RadioButtonComponent from "../../components/radiobutton/radiobutton.component";
 import * as alertUtils from "../../components/alert/alert.utils";
 import * as common from "../../components/common/constants.common";
+import "./sample.feature.scss";
 
 const mapStateToProps = (state:SampleFeatureProps) => {
   return { messages: state.messages };
@@ -224,13 +225,13 @@ export class SampleFeature extends React.Component<
     return (
       <div className="sampleFeature">
         <div className="notificationArea" />
-        <div className="box columns is-multiline has-text-centered has-background-white-ter is-unselectable">
-          <div className="column is-12 is-paddingless">
+        <div className="sampleFeatureHeader columns is-multiline is-unselectable">
+          <div className="column is-12 is-paddingless has-text-right">
             <div className="sampleFeatureTitle title has-text-link">
               {title}
             </div>
           </div>
-          <div className="column is-12 is-paddingless">
+          <div className="column is-12 is-paddingless has-text-right">
             <div className="sampleFeatureMessage subtitle">{subTitle}</div>
           </div>
         </div>

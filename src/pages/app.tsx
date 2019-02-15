@@ -4,26 +4,22 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import WelcomePage from "./welcome/welcome.page";
 import { ComponentsViewer } from "./componentsViewer/componentsViewer.page";
 import "./app.scss";
+import { store } from "../redux/store";
 
-export interface AppProps {
-  store: any;
-  history?: any;
-}
-class App extends React.Component<AppProps, {}> {
+class App extends React.Component<{}, {}> {
   render() {
-    console.log(this.props.store);
-    console.log(this.props.history);
-
     return (
       <BrowserRouter>
         <div className="app">
-          <div className="appHeader">
-            <HeaderComponent {...this.props} />
-          </div>
+          <HeaderComponent {...this.props} />
           <div className="appContent">
             <Switch>
-              <Route exact path="/" component={WelcomePage} />
-              <Route path="/componentsViewer" component={ComponentsViewer} />
+              <Route exact path="/" component={WelcomePage} store={store} />
+              <Route
+                path="/componentsViewer"
+                component={ComponentsViewer}
+                store={store}
+              />
             </Switch>
           </div>
         </div>

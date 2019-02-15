@@ -1,20 +1,13 @@
-import { testReducer, TestState } from "./test.reducer";
 import * as actionTypes from "../constants/actionTypes";
 import update from "immutability-helper";
 import { AlertModel } from "../../components/alert/alert.model";
 
-export { testReducer, TestState };
-
 export type RootState = Readonly<{
   messages: Array<AlertModel>;
-  testReducer: TestState;
 }>;
 
 const initialState: RootState = {
-  messages: new Array<AlertModel>(),
-  testReducer: {
-    framework: "React"
-  }
+  messages: new Array<AlertModel>()
 };
 
 export const reducer = (state = initialState, action: any = {}): RootState => {

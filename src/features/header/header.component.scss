@@ -1,14 +1,19 @@
 .headerComponent {
   border-bottom: 1px solid #ccc;
-  
-  .headerComponentNavigation .icon-bar {
-    margin-top:2rem;
-    a {
-      padding: 0.5rem;
-    }
 
-    i{
-      margin-right: 0.5rem;
+  .headerComponentLogo img{
+      width: 100%;
+  }
+
+  .headerComponentBody {
+    .navbar-item {
+      a {
+        padding: 0.5rem;
+      }
+
+      i {
+        margin-right: 0.5rem;
+      }
     }
   }
 }
