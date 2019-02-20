@@ -4,8 +4,7 @@ import ButtonComponent from "../button/button.component";
 export default class TestComponent extends React.Component<{}, {}> {
   render() {
     const framework: string = "react";
-    console.log("framework", framework);
-
+    
     return (
       <React.Fragment>
         <div>Awesome app created with {framework}</div>

@@ -27,6 +27,10 @@ export class HeaderComponent extends React.Component<{}, {}> {
                 <i className="fas fa-globe" />
                 Component Viewer
               </Link>
+              <Link to="/testArea" className="navbar-item">
+                <i className="fas fa-wrench" />
+                Test Area
+              </Link>
               <a className="navbar-item disabled" onClick={this.onDocumentationClicked}>
                 <i className="fas fa-file" />
                 Documentation

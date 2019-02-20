@@ -8,14 +8,15 @@ import RadioButtonComponent from "../../components/radiobutton/radiobutton.compo
 import * as alertUtils from "../../components/alert/alert.utils";
 import * as common from "../../components/common/constants.common";
 import "./sample.feature.scss";
+import { AlertModel } from "../../components/alert/alert.model";
 
-const mapStateToProps = (state:SampleFeatureProps) => {
+const mapStateToProps = (state: any) => {
   return { messages: state.messages };
 };
 
-function mapDispatchToProps(dispatch:any) {
+function mapDispatchToProps(dispatch: any) {
   return {
-    addMessage: (message:Array<string>) => dispatch(addMessage(message))
+    addMessage: (message: Array<AlertModel>) => dispatch(addMessage(message))
   };
 }
 
@@ -23,7 +24,7 @@ export interface SampleFeatureProps {
   title: string;
   subTitle: string;
   onAlertParent: Function;
-  messages: Array<string>;
+  messages: Array<AlertModel>;
   addMessage: Function;
 }
 
@@ -44,9 +45,9 @@ export class SampleFeature extends React.Component<
   SampleFeatureProps,
   SampleFeatureState
 > {
-  constructor(props:SampleFeatureProps) {
+  constructor(props: SampleFeatureProps) {
     super(props);
-
+        
     this.state = {
       notificationMessage: "",
       notificationType: common.default.SUCCESS,
@@ -85,7 +86,9 @@ export class SampleFeature extends React.Component<
         notificationPosition,
         notificationSide,
         notificationType,
-        notificationTimedOption === common.default.YES ? notificationDuration : 0
+        notificationTimedOption === common.default.YES
+          ? notificationDuration
+          : 0
       );
 
       this.props.addMessage(message);
@@ -151,7 +154,7 @@ export class SampleFeature extends React.Component<
             labelPosition={common.default.TOP}
             iconLeft="fas fa-envelope"
             iconRight="fas fa-check"
-            isSuccess={true}
+            isDanger={true}
             onChange={this.onNotificationMessageChanged}
           />
         </div>

@@ -4,15 +4,22 @@ import { AlertModel } from "../../components/alert/alert.model";
 
 export type RootState = Readonly<{
   messages: Array<AlertModel>;
+  compiler: string;
+  framework: string;
+  bundler: string;
 }>;
 
 const initialState: RootState = {
-  messages: new Array<AlertModel>()
+  messages: [],
+  compiler: 'compiler',
+  framework: '[framework]',
+  bundler: 'bundler'
 };
 
 export const reducer = (state = initialState, action: any = {}): RootState => {
   switch (action.type) {
     case actionTypes.ADD_MESSAGE:
+    console.log(action.payload);
       return update(state, {
         messages: { $push: [action.payload] }
       });

@@ -1,23 +1,31 @@
 import * as React from "react";
 import classnames from "classnames";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import SampleFeature from "../../features/sample/sample.feature";
 import ModalComponent from "../../components/modal/modal.component";
 import AlertComponent from "../../components/alert/alert.component";
 import { removeMessage } from "../../redux/actions";
 import { AlertModel } from "../../components/alert/alert.model";
+
 import "./componentsViewer.page.scss";
 
-export interface AppPageState {
-  isModalVisible: boolean;
-  modalMessage: string;
-  messages?: Array<AlertModel>;
-}
-
-export interface AppPageProps {
+export interface ComponentsViewerPageProps {
   messages: Array<AlertModel>;
   removeMessage: Function;
+  history: any;
+  location: any;
+  match: any;
 }
+
+export interface ComponentsViewerPageState {
+  isModalVisible: boolean;
+  modalMessage: string;
+}
+
+const mapStateToProps = (state: any) => {
+  return { messages: state.messages };
+};
 
 function mapDispatchToProps(dispatch: any) {
   return {
@@ -26,27 +34,17 @@ function mapDispatchToProps(dispatch: any) {
   };
 }
 
-const mapStateToProps = (state: any) => {
-  console.log("trying...");
-  return { messages: state.messages };
-};
-
-export class ComponentsViewer extends React.Component<
-  AppPageProps,
-  AppPageState
+class ComponentsViewerPage extends React.Component<
+  ComponentsViewerPageProps,
+  ComponentsViewerPageState
 > {
-  constructor(props: AppPageProps) {
+  constructor(props: ComponentsViewerPageProps) {
     super(props);
 
     this.state = {
       isModalVisible: false,
       modalMessage: ""
     };
-  }
-
-  componentDidUpdate() {
-    console.log(this.props.messages);
-    console.log(this.state.messages);
   }
 
   onAlertParent = (modalMessage: string): void => {
@@ -78,8 +76,7 @@ export class ComponentsViewer extends React.Component<
 
   renderAlerts = (): React.ReactNode => {
     const { messages } = this.props;
-    console.log(messages);
-
+    
     const alertList: Array<React.ReactNode> = [];
     let position: string = "";
     let side: string = "";
@@ -88,7 +85,6 @@ export class ComponentsViewer extends React.Component<
       messages.forEach((item: AlertModel) => {
         position = item.position;
         side = item.side;
-        console.log(item);
         alertList.push(
           <AlertComponent
             alert={item}
@@ -145,7 +141,9 @@ export class ComponentsViewer extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ComponentsViewer);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ComponentsViewerPage)
+);
