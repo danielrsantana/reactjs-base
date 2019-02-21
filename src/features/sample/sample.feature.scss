@@ -1,3 +1,22 @@
-.sampleFeatureHeader{
-    padding: 0.5rem;
+.sampleFeature {
+  padding: 0.25rem;
+
+  .sampleFeatureImage {
+    display: flex;
+    img {
+      align-self: center;
+      flex: 0 0 auto;
+    }
+  }
+
+  .sampleFeatureBody {
+    background-color: #f7f7f7;
+    .sampleFeatureBodyTitle {
+      margin-top: 1rem;
+    }
+
+    .sampleFeatureBox {
+      margin: 1.5rem 1rem 1.5rem 0;
+    }
+  }
 }

@@ -7,8 +7,9 @@ import DropDownComponent from "../../components/dropdown/dropdown.component";
 import RadioButtonComponent from "../../components/radiobutton/radiobutton.component";
 import * as alertUtils from "../../components/alert/alert.utils";
 import * as common from "../../components/common/constants.common";
-import "./sample.feature.scss";
 import { AlertModel } from "../../components/alert/alert.model";
+
+import "./sample.feature.scss";
 
 const mapStateToProps = (state: any) => {
   return { messages: state.messages };
@@ -47,7 +48,7 @@ export class SampleFeature extends React.Component<
 > {
   constructor(props: SampleFeatureProps) {
     super(props);
-        
+
     this.state = {
       notificationMessage: "",
       notificationType: common.default.SUCCESS,
@@ -132,7 +133,26 @@ export class SampleFeature extends React.Component<
     });
   };
 
-  renderNotificationControls = (): React.ReactNode => {
+  renderTimerField = (): React.ReactNode => {
+    const { notificationDuration, notificationTimedOption } = this.state;
+
+    if (notificationTimedOption === "yes") {
+      return (
+        <InputTextComponent
+          type={common.default.TYPE_NUMBER}
+          placeHolder="Duration"
+          label="Duration"
+          labelPosition={common.default.TOP}
+          iconLeft="fas fa-clock"
+          isSuccess={true}
+          value={notificationDuration.toString()}
+          onChange={this.onNotificationDurationChanged}
+        />
+      );
+    }
+  };
+
+  renderNotificationControls = () => {
     const {
       notificationType,
       notificationTypes,
@@ -145,8 +165,8 @@ export class SampleFeature extends React.Component<
     } = this.state;
 
     return (
-      <div className="columns box is-multiline ">
-        <div className="column is-6">
+      <div className="columns is-multiline is-unselectable">
+        <div className="column is-10">
           <InputTextComponent
             type={common.default.TYPE_TEXT}
             placeHolder="Notification Message"
@@ -158,7 +178,7 @@ export class SampleFeature extends React.Component<
             onChange={this.onNotificationMessageChanged}
           />
         </div>
-        <div className="column is-3">
+        <div className="column is-2">
           <DropDownComponent
             label="Type"
             labelPosition={common.default.TOP}
@@ -196,66 +216,56 @@ export class SampleFeature extends React.Component<
             }
           />
         </div>
-        {this.renderTimerField()}
+        <div className="column is-3">{this.renderTimerField()}</div>
       </div>
     );
   };
 
-  renderTimerField = (): React.ReactNode => {
-    const { notificationTimedOption, notificationDuration } = this.state;
-
-    if (notificationTimedOption === "yes") {
-      return (
-        <div className="column is-5">
-          <InputTextComponent
-            type={common.default.TYPE_NUMBER}
-            placeHolder="Duration"
-            label="Duration"
-            labelPosition={common.default.TOP}
-            iconLeft="fas fa-clock"
-            isSuccess={true}
-            value={notificationDuration.toString()}
-            onChange={this.onNotificationDurationChanged}
-          />
-        </div>
-      );
-    }
-  };
-
   render() {
-    const { title, subTitle } = this.props;
-
+    const { title } = this.props;
     return (
-      <div className="sampleFeature">
-        <div className="notificationArea" />
-        <div className="sampleFeatureHeader columns is-multiline is-unselectable">
-          <div className="column is-12 is-paddingless has-text-right">
-            <div className="sampleFeatureTitle title has-text-link">
-              {title}
+      <div className="sampleFeature columns is-gapless">
+        <div className="sampleFeatureImage column is-4 is-hidden-mobile">
+          <img src="img/headerBg-mobile.jpg" alt="Flex Payment" />
+        </div>
+        <div className="sampleFeatureBody column is-8">
+          <div className="sampleFeatureBodyTitle columns">
+            <div className="column is-12">
+              <div className="title has-text-info">{title}</div>
             </div>
           </div>
-          <div className="column is-12 is-paddingless has-text-right">
-            <div className="sampleFeatureMessage subtitle">{subTitle}</div>
+          <div className="sampleFeatureBox box">
+            <div className="media-content">
+              <p>
+                <strong>Send message to Redux</strong>
+                <br />
+                This feature simulate the exchange of messages between Redux and
+                application components. In order to use it, Define the text of
+                the message and click on Show Notification. The message will be
+                sent to store and the App (Main page) will consume it.
+              </p>
+              <hr />
+              {this.renderNotificationControls()}
+            </div>
           </div>
-        </div>
-        {this.renderNotificationControls()}
-        <div className="columns">
-          <div className="column is-6">
-            <ButtonComponent
-              isLink={true}
-              isOutlined={true}
-              onClick={this.onAlertParent}
-              text="Show on Modal"
-            />
-          </div>
-          <div className="column is-6">
-            <div className="control is-pulled-right">
+          <div className="sampleFeatureControls columns">
+            <div className="column is-3 is-offset-1">
               <ButtonComponent
-                isLink={true}
-                onClick={this.onShowNotification}
-                isPulledRight={true}
-                text="Show Notification"
+                isSuccess={true}
+                isOutlined={true}
+                onClick={this.onAlertParent}
+                text="Show on Modal"
               />
+            </div>
+            <div className="column is-3 is-offset-5">
+              <div className="control">
+                <ButtonComponent
+                  isLink={true}
+                  onClick={this.onShowNotification}
+                  isPulledRight={true}
+                  text="Show Notification"
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 // shared config (dev and prod)
 const { resolve } = require("path");
 const { CheckerPlugin } = require("awesome-typescript-loader");
+const CopyWebPackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -46,6 +47,12 @@ module.exports = {
   },
   plugins: [
     new CheckerPlugin(),
+    new CopyWebPackPlugin([
+      {
+        from: "../assets",
+        to: "./"
+      }
+    ]),
     new HtmlWebpackPlugin({ template: "index.html" })
   ],
   performance: {

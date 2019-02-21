@@ -19,7 +19,6 @@ const initialState: RootState = {
 export const reducer = (state = initialState, action: any = {}): RootState => {
   switch (action.type) {
     case actionTypes.ADD_MESSAGE:
-    console.log(action.payload);
       return update(state, {
         messages: { $push: [action.payload] }
       });

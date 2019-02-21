@@ -1,11 +1,12 @@
 .headerComponent {
   border-bottom: 1px solid #ccc;
-
-  .headerComponentLogo img{
-      width: 100%;
-  }
+  box-shadow: 1px 1px 3px #d6d6d6;
+  border-radius: 0.5em;
 
   .headerComponentBody {
+    height: 100%;
+    align-items: center;
+
     .navbar-item {
       a {
         padding: 0.5rem;
